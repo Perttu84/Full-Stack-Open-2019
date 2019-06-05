@@ -1,0 +1,15 @@
+title käyttäjä menee selaimella osoitteeseen fullstack-exampleapp.herokuapp.com/spa
+
+Käyttäjä->Selain:
+note left of Selain: Käyttäjä menee sivulle fullstack-exampleapp.herokuapp.com/spa 
+Selain->Palvelin: GET fullstack-exampleapp.herokuapp.com/spa
+Palvelin->Selain: status 200, sivun HTML-koodi
+Selain->Palvelin: GET fullstack-exampleapp.herokuapp.com/main.css
+Palvelin->Selain: status 200, HTML-koodin käyttämä tyylitiedosto
+Selain->Palvelin: GET fullstack-exampleapp.herokuapp.com/spa.js
+Palvelin->Selain: status 200, HTML-koodin käyttämä JS-skripti-tiedosto
+Selain->Palvelin: GET fullstack-exampleapp.herokuapp.com/data.json
+Palvelin->Selain: status 200, sivun käyttämä json-tiedosto, joka sisältää tehdyt muistiinpanot
+note left of Selain
+Selain näyttää palvelimen palauttaman HTML:n main.css-tiedoston tyylien mukaan ajettuaan
+spa.js:n, joka lisää DOMiin palvelimelta tiedostossa data.json saatavat muistiinpanot

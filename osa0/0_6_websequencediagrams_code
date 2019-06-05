@@ -1,0 +1,16 @@
+title käyttäjä luo uuden muistiinpanon single page -versiossa
+
+Käyttäjä->Selain:
+note left of Selain
+Käyttäjä tallettaa uuden muistiinpanon sivulla
+fullstack-exampleapp.herokuapp.com/spa
+end note
+Selain->Palvelin: POST fullstack-exampleapp.herokuapp.com/new_note_spa
+Palvelin->Selain: status 201 created
+note left of Palvelin
+single page -versiossa spa.js:n sisältämä koodi estää normaalin formin lähettämisen
+ja siihen liittyvän uudelleenohjauksen vaan hoitaa itse selaimessa lähetyksen sekä piirtää
+muistiinpanojen listan uudestaan, jolloin uusikin muistiinpano saadaan mukaan
+end note
+note left of Selain
+Käyttäjä näkee päivitetyn listan muistiinpanoista

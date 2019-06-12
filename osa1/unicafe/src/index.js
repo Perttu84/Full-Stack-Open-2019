@@ -5,6 +5,10 @@ const Button = ({handleClick, text}) => (<button onClick={handleClick}>{text}</b
 
 const ShowCount = ({count, type}) => (<p>{type} {count}</p>)
 
+const Average = ({good, neutral, bad}) => (<p>average {(good-bad)/(good+neutral+bad)}</p>)
+
+const Positive = ({good, neutral, bad}) => (<p>positive {good/(good+neutral+bad)*100} %</p>)
+
 const App = () => {
   // tallenna napit omaan tilaansa
   const [good, setGood] = useState(0)
@@ -21,6 +25,8 @@ const App = () => {
       <ShowCount count={good} type='good' />
       <ShowCount count={neutral} type='neutral' />
       <ShowCount count={bad} type='bad' />
+      <Average good={good} neutral={neutral} bad={bad} />
+      <Positive good={good} neutral={neutral} bad={bad} />
     </div>
   )
 }

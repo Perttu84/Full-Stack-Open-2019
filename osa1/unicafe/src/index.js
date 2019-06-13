@@ -7,7 +7,12 @@ const positive = (good, neutral, bad) => (good/(good+neutral+bad)*100).toString(
 
 const Button = ({handleClick, text}) => (<button onClick={handleClick}>{text}</button>)
 
-const Statistic = ({text, value}) => (<p>{text} {value}</p>)
+const Statistic = ({text, value}) => (
+  <tr>
+  <td>{text}</td>
+  <td>{value}</td>
+  </tr>
+  )
 
 const Statistics = ({good, neutral, bad}) => {
 	if (good+neutral+bad==0) {
@@ -21,11 +26,13 @@ const Statistics = ({good, neutral, bad}) => {
 	return (
 	<>
 	  <h1>statistics</h1>
+	  <table>
 	  <Statistic text="good" value={good}/>
 	  <Statistic text="neutral" value={neutral}/>
 	  <Statistic text="bad" value={bad}/>
 	  <Statistic text="average" value={average(good,neutral,bad)}/>
 	  <Statistic text="positive" value={positive(good, neutral, bad)}/>
+	  </table>
 	</>
 	)
 }

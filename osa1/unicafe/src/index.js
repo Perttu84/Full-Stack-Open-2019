@@ -1,15 +1,14 @@
 import React, { useState } from 'react'
 import ReactDOM from 'react-dom'
 
+const average = (good, neutral, bad) => (good-bad)/(good+neutral+bad)
+
+const positive = (good, neutral, bad) => (good/(good+neutral+bad)*100).toString() + " %"
+
 const Button = ({handleClick, text}) => (<button onClick={handleClick}>{text}</button>)
 
-const ShowCount = ({count, type}) => (<p>{type} {count}</p>)
+const Statistic = ({text, value}) => (<p>{text} {value}</p>)
 
-const Average = ({good, neutral, bad}) => (<p>average {(good-bad)/(good+neutral+bad)}</p>)
-
-const Positive = ({good, neutral, bad}) => (<p>positive {good/(good+neutral+bad)*100} %</p>)
-
-const Statistic = ({text, value}) => (<p>text </p>)
 const Statistics = ({good, neutral, bad}) => {
 	if (good+neutral+bad==0) {
 		return (
@@ -22,11 +21,11 @@ const Statistics = ({good, neutral, bad}) => {
 	return (
 	<>
 	  <h1>statistics</h1>
-	  <ShowCount count={good} type='good' />
-	  <ShowCount count={neutral} type='neutral' />
-	  <ShowCount count={bad} type='bad' />
-	  <Average good={good} neutral={neutral} bad={bad} />
-	  <Positive good={good} neutral={neutral} bad={bad} />
+	  <Statistic text="good" value={good}/>
+	  <Statistic text="neutral" value={neutral}/>
+	  <Statistic text="bad" value={bad}/>
+	  <Statistic text="average" value={average(good,neutral,bad)}/>
+	  <Statistic text="positive" value={positive(good, neutral, bad)}/>
 	</>
 	)
 }

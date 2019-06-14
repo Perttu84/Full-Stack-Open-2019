@@ -5,3 +5,5 @@ This repository contains my answers for course **Full Stack Open 2019**
 * [Osa 0](/osa0)
 * [Osa 1](/osa1)
     * [Kurssitiedot](/osa1/kurssitiedot)
+    * [Unicafe](/osa1/unicafe)
+    * [Anekdootit](/osa1/anekdootit)

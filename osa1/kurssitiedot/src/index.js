@@ -4,7 +4,7 @@ import ReactDOM from 'react-dom'
 const Header = (props) => {
 	return (
 		<h1>
-		  {props.name}
+		  {props.course.name}
 		</h1>
 	)
 }

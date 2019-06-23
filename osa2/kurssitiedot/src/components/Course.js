@@ -2,9 +2,9 @@ import React from 'react'
 
 const Header = (props) => {
 	return (
-		<h1>
+		<h2>
 		  {props.course.name}
-		</h1>
+		</h2>
 	)
 }
 
@@ -18,7 +18,7 @@ const Part = (props) => {
 
 const Content = ({parts}) => {
 
-	const rows = () => parts.map((part,i) => <Part part={part} key={i}/>)
+	const rows = () => parts.map((part) => <Part part={part} key={part.id}/>)
 	return (
 	  <>
         {rows()}

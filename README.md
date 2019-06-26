@@ -8,4 +8,5 @@ This repository contains my answers for course **Full Stack Open 2019**
     * [Unicafe](/osa1/unicafe)
     * [Anekdootit](/osa1/anekdootit)
 * [Osa 2](/osa2)
-    * [Kurssitiedot](/osa1/kurssitiedot)
+    * [Kurssitiedot](/osa2/kurssitiedot)
+    * [Puhelinluettelo](/osa2/puhelinluettelo)

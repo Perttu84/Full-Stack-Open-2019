@@ -1,12 +1,11 @@
 import React from 'react'
 import Country from './Country'
 
-const Countries = ({countries}) => {
-
+const Countries = ({countries, countrySelectionFunction}) => {
 	if (countries.length > 10) {
 		return (<div>Too many matches, specify another filter</div>)
 	} else if (countries.length > 1) {
-        const rows = () => countries.map((country) => <div key={country.alpha2Code}>{country.name}</div>)
+        const rows = () => countries.map((country) => <div key={country.alpha2Code}>{country.name}<button onClick={countrySelectionFunction} value={country.name}>show</button></div>)
         return (
           <>
             {rows()}

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
-import Filter from './components/Countries'
+import Countries from './components/Countries'
 
 const App = () => {
   const [ countries, setCountries] =  useState([])
@@ -20,10 +20,13 @@ const App = () => {
     setFilter(event.target.value)
   }
 
+ const handleCountrySelection = (event) => {
+    setFilter(event.target.value)
+ }
   return (
     <>
     <div>find countries <input value={filter} onChange={handleFilterChange}></input></div>
-    <Filter countries={countriesToShow} />
+    <Countries countries={countriesToShow} countrySelectionFunction={handleCountrySelection} />
     </>
   )
 }

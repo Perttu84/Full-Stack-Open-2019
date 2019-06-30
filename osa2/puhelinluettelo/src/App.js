@@ -3,6 +3,7 @@ import axios from 'axios'
 import Persons from './components/Persons'
 import Filter from './components/Filter'
 import PersonForm from './components/PersonForm'
+import contactService from './services/contacts'
 
 const App = () => {
   const [ persons, setPersons] =  useState([])
@@ -28,7 +29,11 @@ const App = () => {
     }
 
     if (persons.map(person => person.name).indexOf(newName) === -1) {
-      setPersons(persons.concat(personObject))
+      contactService
+        .create(personObject)
+        .then(response => {
+          setPersons(persons.concat(personObject))
+        })
     } else {
       alert(`${newName} is already added to phonebook`)
     }

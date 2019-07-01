@@ -34,7 +34,15 @@ const App = () => {
           setPersons(persons.concat(response.data))
         })
     } else {
-      alert(`${newName} is already added to phonebook`)
+      if (window.confirm(`${newName} is already added to phonebook, replace the old number with a new one?`)) {
+        console.log('updatee')
+        const personToUpdate = persons.find(person => person.name === newName)
+        contactService
+          .update(personToUpdate.id, { ...personToUpdate, number: newNumber})
+          .then(response => {
+            setPersons(persons.map(person => person.id !== personToUpdate.id ? person : response.data))
+          })
+      }
     }
 
     

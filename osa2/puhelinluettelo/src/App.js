@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import Persons from './components/Persons'
 import Filter from './components/Filter'
 import PersonForm from './components/PersonForm'
+import Notification from './components/Notification'
 import contactService from './services/contacts'
 
 const App = () => {
@@ -9,6 +10,8 @@ const App = () => {
   const [ newName, setNewName ] = useState('')
   const [ newNumber, setNewNumber ] = useState('')
   const [ filter, setFilter ] = useState('')
+  const [ message, setMessage ] = useState(null)
+  const [ messageType, setMessageType ] = useState(null)
 
   useEffect(() => {
     contactService
@@ -32,15 +35,26 @@ const App = () => {
         .create(personObject)
         .then(response => {
           setPersons(persons.concat(response.data))
+          setMessage(`Successfully added ${newName}`)
+          setMessageType('success')
+          setTimeout(() => {
+            setMessage(null)
+            setMessageType(null)
+        }, 2000)
         })
     } else {
       if (window.confirm(`${newName} is already added to phonebook, replace the old number with a new one?`)) {
-        console.log('updatee')
         const personToUpdate = persons.find(person => person.name === newName)
         contactService
           .update(personToUpdate.id, { ...personToUpdate, number: newNumber})
           .then(response => {
             setPersons(persons.map(person => person.id !== personToUpdate.id ? person : response.data))
+            setMessage(`Successfully updated ${newName}'s number`)
+            setMessageType('success')
+            setTimeout(() => {
+              setMessage(null)
+              setMessageType(null)
+            }, 2000)
           })
       }
     }
@@ -63,13 +77,21 @@ const App = () => {
   const removePerson = id => {
     contactService.remove(id)
       .then(response => {
+        const removedPerson = persons.find(p => p.id === id)
         setPersons(persons.filter(person => person.id !== id))
+        setMessage(`Successfully removed ${removedPerson.name}`)
+        setMessageType('success')
+        setTimeout(() => {
+        setMessage(null)
+        setMessageType(null)
+        }, 2000)
       })
   }
 
   return (
     <div>
       <h2>Phonebook</h2>
+      <Notification message={message} className={messageType} />
       <Filter value={filter} changeFunction={handleFilterChange} />
       <h2>add a new</h2>
       <PersonForm addPerson={addPerson} newName={newName}

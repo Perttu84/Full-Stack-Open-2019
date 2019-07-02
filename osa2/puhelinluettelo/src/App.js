@@ -56,6 +56,15 @@ const App = () => {
               setMessageType(null)
             }, 2000)
           })
+          .catch(error => {
+            setMessage(`Information of ${newName} has already been removed from server`)
+            setMessageType('error')
+            setPersons(persons.filter(p => p.id !== personToUpdate.id))
+            setTimeout(() => {
+              setMessage(null)
+              setMessageType(null)
+            }, 2000)
+          })
       }
     }
 
@@ -75,17 +84,26 @@ const App = () => {
   }
 
   const removePerson = id => {
+    const personToRemove = persons.find(p => p.id === id)
     contactService.remove(id)
       .then(response => {
-        const removedPerson = persons.find(p => p.id === id)
         setPersons(persons.filter(person => person.id !== id))
-        setMessage(`Successfully removed ${removedPerson.name}`)
+        setMessage(`Successfully removed ${personToRemove.name}`)
         setMessageType('success')
         setTimeout(() => {
         setMessage(null)
         setMessageType(null)
         }, 2000)
       })
+      .catch(error => {
+         setMessage(`Information of ${personToRemove.name} has already been removed from server`)
+         setPersons(persons.filter(p => p.id !== personToRemove.id))
+         setMessageType('error')
+         setTimeout(() => {
+           setMessage(null)
+           setMessageType(null)
+            }, 2000)
+          })
   }
 
   return (

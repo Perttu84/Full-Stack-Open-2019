@@ -30,7 +30,7 @@ const App = () => {
       number: newNumber,
     }
 
-    if (persons.map(person => person.name).indexOf(newName) === -1) {
+    if (persons.map(person => person.name.toLowerCase()).indexOf(newName.toLowerCase()) === -1) {
       contactService
         .create(personObject)
         .then(response => {
@@ -42,11 +42,19 @@ const App = () => {
             setMessageType(null)
         }, 2000)
         })
+        .catch(error => {
+          setMessage(error.response.data.error)
+          setMessageType('error')
+          setTimeout(() =>{
+            setMessage(null)
+            setMessageType(null)
+          }, 2000)
+        })
     } else {
       if (window.confirm(`${newName} is already added to phonebook, replace the old number with a new one?`)) {
-        const personToUpdate = persons.find(person => person.name === newName)
+        const personToUpdate = persons.find(person => person.name.toLowerCase() === newName.toLowerCase())
         contactService
-          .update(personToUpdate.id, { ...personToUpdate, number: newNumber})
+          .update(personToUpdate.id, { name: newName, number: newNumber})
           .then(response => {
             setPersons(persons.map(person => person.id !== personToUpdate.id ? person : response.data))
             setMessage(`Successfully updated ${newName}'s number`)
@@ -57,9 +65,13 @@ const App = () => {
             }, 2000)
           })
           .catch(error => {
-            setMessage(`Information of ${newName} has already been removed from server`)
+            if (error.response.data.error === "Validation failed: name: Cannot read property 'ownerDocument' of null") {
+              setMessage(`Information of ${newName} has already been removed from server`)
+              setPersons(persons.filter(p => p.id !== personToUpdate.id))
+            } else {
+              setMessage(error.response.data.error)
+            }
             setMessageType('error')
-            setPersons(persons.filter(p => p.id !== personToUpdate.id))
             setTimeout(() => {
               setMessage(null)
               setMessageType(null)

@@ -40,12 +40,12 @@ const App = () => {
           setTimeout(() => {
             setMessage(null)
             setMessageType(null)
-        }, 2000)
+          }, 2000)
         })
         .catch(error => {
           setMessage(error.response.data.error)
           setMessageType('error')
-          setTimeout(() =>{
+          setTimeout(() => {
             setMessage(null)
             setMessageType(null)
           }, 2000)
@@ -54,7 +54,7 @@ const App = () => {
       if (window.confirm(`${newName} is already added to phonebook, replace the old number with a new one?`)) {
         const personToUpdate = persons.find(person => person.name.toLowerCase() === newName.toLowerCase())
         contactService
-          .update(personToUpdate.id, { name: newName, number: newNumber})
+          .update(personToUpdate.id, { name: newName, number: newNumber })
           .then(response => {
             setPersons(persons.map(person => person.id !== personToUpdate.id ? person : response.data))
             setMessage(`Successfully updated ${newName}'s number`)
@@ -65,7 +65,7 @@ const App = () => {
             }, 2000)
           })
           .catch(error => {
-            if (error.response.data.error === "Validation failed: name: Cannot read property 'ownerDocument' of null") {
+            if (error.response.data.error === 'Validation failed: name: Cannot read property \'ownerDocument\' of null') {
               setMessage(`Information of ${newName} has already been removed from server`)
               setPersons(persons.filter(p => p.id !== personToUpdate.id))
             } else {
@@ -80,7 +80,6 @@ const App = () => {
       }
     }
 
-    
     setNewName('')
     setNewNumber('')
   }
@@ -103,19 +102,19 @@ const App = () => {
         setMessage(`Successfully removed ${personToRemove.name}`)
         setMessageType('success')
         setTimeout(() => {
-        setMessage(null)
-        setMessageType(null)
+          setMessage(null)
+          setMessageType(null)
         }, 2000)
       })
       .catch(error => {
-         setMessage(`Information of ${personToRemove.name} has already been removed from server`)
-         setPersons(persons.filter(p => p.id !== personToRemove.id))
-         setMessageType('error')
-         setTimeout(() => {
-           setMessage(null)
-           setMessageType(null)
-            }, 2000)
-          })
+        setMessage(`Information of ${personToRemove.name} has already been removed from server`)
+        setPersons(persons.filter(p => p.id !== personToRemove.id))
+        setMessageType('error')
+        setTimeout(() => {
+          setMessage(null)
+          setMessageType(null)
+        }, 2000)
+      })
   }
 
   return (
@@ -125,8 +124,8 @@ const App = () => {
       <Filter value={filter} changeFunction={handleFilterChange} />
       <h2>add a new</h2>
       <PersonForm addPerson={addPerson} newName={newName}
-      newNumber={newNumber} handleNameChange={handleNameChange}
-      handleNumberChange={handleNumberChange} />
+        newNumber={newNumber} handleNameChange={handleNameChange}
+        handleNumberChange={handleNumberChange} />
       <h2>Numbers</h2>
       <Persons persons={personsToShow} deleteFunction={removePerson}/>
     </div>

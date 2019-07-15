@@ -65,7 +65,8 @@ const App = () => {
             }, 2000)
           })
           .catch(error => {
-            if (error.response.data.error === 'Validation failed: name: Cannot read property \'ownerDocument\' of null') {
+            if (error.response.data.error === 'Validation failed: name: Cannot read property \'ownerDocument\' of null' ||
+               error.response.data.error === 'Cannot read property \'toJSON\' of null') {
               setMessage(`Information of ${newName} has already been removed from server`)
               setPersons(persons.filter(p => p.id !== personToUpdate.id))
             } else {

@@ -11,3 +11,4 @@ This repository contains my answers for course **Full Stack Open 2019**
     * [Kurssitiedot](/osa2/kurssitiedot)
     * [Puhelinluettelo](/osa2/puhelinluettelo)
     * [Maiden tiedot](/osa2/maiden_tiedot)
+* [Osa 4 - Blogilista](/osa4)

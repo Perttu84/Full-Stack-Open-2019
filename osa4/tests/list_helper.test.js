@@ -62,11 +62,11 @@ const listWithMultipleBlogs = [
   }
 ]
 
-const listWithMultipleBlogsAndMultipleFavorites = [
+const listWithMultipleBlogsAndSharedTops = [
   {
     _id: '5a422a851b54a676234d17f7',
     title: 'React patterns',
-    author: 'Michael Chan',
+    author: 'Edsger W. Dijkstra',
     url: 'https://reactpatterns.com/',
     likes: 7,
     __v: 0
@@ -92,7 +92,7 @@ const listWithMultipleBlogsAndMultipleFavorites = [
     title: 'First class tests',
     author: 'Robert C. Martin',
     url: 'http://blog.cleancoder.com/uncle-bob/2017/05/05/TestDefinitions.htmll',
-    likes: 10,
+    likes: 12,
     __v: 0
   },
   {
@@ -113,7 +113,7 @@ const listWithMultipleBlogsAndMultipleFavorites = [
   }
 ]
 
-const listWithMultipleBlogsAndMultipleAuthorsWithMostBlogs = [
+const listWithMultipleBlogsAndSharedMostBlogsAndLikes = [
   {
     _id: '5a422a851b54a676234d17f7',
     title: 'React patterns',
@@ -201,7 +201,7 @@ describe('favorite blog', () => {
     })
   })
   test('when list has multiple blogs with most likes being shared by multiple blogs equals to one of those blogs', () => {
-    const result = listHelper.favoriteBlog(listWithMultipleBlogsAndMultipleFavorites)
+    const result = listHelper.favoriteBlog(listWithMultipleBlogsAndSharedTops)
     expect([
       {
         title: 'Canonical string reduction',
@@ -238,7 +238,7 @@ describe('most blogs', () => {
     )
   })
   test('when list has multiple blogs with multiple authors with the most amount of blogs equals one of those authors and his/her blog count', () => {
-    const result = listHelper.mostBlogs(listWithMultipleBlogsAndMultipleAuthorsWithMostBlogs)
+    const result = listHelper.mostBlogs(listWithMultipleBlogsAndSharedTops)
     expect([
       {
         author: 'Robert C. Martin',
@@ -247,6 +247,41 @@ describe('most blogs', () => {
       {
         author: 'Edsger W. Dijkstra',
         blogs: 3
+      }
+    ])
+      .toContainEqual(result)
+  })
+})
+
+describe('most likes', () => {
+  test('when list has only one blog equals to author of that blog and like count of that blog', () => {
+    const result = listHelper.mostLikes(listWithOneBlog)
+    expect(result).toEqual(
+      {
+        author: 'Edsger W. Dijkstra',
+        likes: 5
+      }
+    )
+  })
+  test('when list has multiple blogs equals to author with most likes and his/her total like count', () => {
+    const result = listHelper.mostLikes(listWithMultipleBlogs)
+    expect(result).toEqual(
+      {
+        author: 'Edsger W. Dijkstra',
+        likes: 17
+      }
+    )
+  })
+  test('when list has multiple blogs with multiple authors with the most amount of blogs equals one of those authors and his/her blog count', () => {
+    const result = listHelper.mostLikes(listWithMultipleBlogsAndSharedTops)
+    expect([
+      {
+        author: 'Robert C. Martin',
+        likes: 24
+      },
+      {
+        author: 'Edsger W. Dijkstra',
+        likes: 24
       }
     ])
       .toContainEqual(result)

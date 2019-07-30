@@ -59,6 +59,32 @@ describe('format and number of blogs in database', () => {
   })
 })
 
+describe('adding a blog works as expected', () => {
+  test('number of blogs is increased by one and the title is correct', async () => {
+    const newBlog = {
+      title: 'New Blog',
+      author: 'Tester',
+      url: 'http://newblog.com',
+      likes: 5
+    }
+    await api
+      .post('/api/blogs')
+      .send(newBlog)
+      .expect(201)
+      .expect('Content-Type', /application\/json/)
+
+    const response = await api.get('/api/blogs')
+
+    const titles = response.body.map(r => r.title)
+
+    expect(response.body.length).toBe(initialBlogs.length + 1)
+    expect(titles).toContain(
+      'New Blog'
+    )
+
+  })
+})
+
 afterAll(() => {
   mongoose.connection.close()
 })

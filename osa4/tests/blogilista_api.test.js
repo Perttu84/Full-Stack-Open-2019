@@ -51,6 +51,12 @@ describe('format and number of blogs in database', () => {
     const response = await api.get('/api/blogs')
     expect(response.body.length).toBe(3)
   })
+  test('blog object identifier field is named id', async () => {
+    const response = await api.get('/api/blogs')
+    expect(response.body[0].id).toBeDefined()
+    expect(response.body[1].id).toBeDefined()
+    expect(response.body[2].id).toBeDefined()
+  })
 })
 
 afterAll(() => {

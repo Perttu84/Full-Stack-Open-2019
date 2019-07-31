@@ -100,6 +100,27 @@ describe('adding a blog works as expected', () => {
 
   })
 
+  test('if new blog is missing title expect status 400 Bad Request', async () => {
+    const newBlog = {
+      author: 'Tester',
+      url: 'http://newblog.com'
+    }
+    await api
+      .post('/api/blogs')
+      .send(newBlog)
+      .expect(400)
+  })
+
+  test('if new blog is missing url expect status 400 Bad Request', async () => {
+    const newBlog = {
+      title: 'New Blog',
+      author: 'Tester'
+    }
+    await api
+      .post('/api/blogs')
+      .send(newBlog)
+      .expect(400)
+  })
 })
 
 afterAll(() => {

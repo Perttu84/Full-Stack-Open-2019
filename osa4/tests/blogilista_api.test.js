@@ -81,8 +81,25 @@ describe('adding a blog works as expected', () => {
     expect(titles).toContain(
       'New Blog'
     )
+  })
+
+  test('if likes is not defined for added blog a value of zero is given', async () => {
+    const newBlog = {
+      title: 'New Blog',
+      author: 'Tester',
+      url: 'http://newblog.com'
+    }
+
+    const response = await api
+      .post('/api/blogs')
+      .send(newBlog)
+      .expect(201)
+      .expect('Content-Type', /application\/json/)
+
+    expect(response.body.likes).toBe(0)
 
   })
+
 })
 
 afterAll(() => {

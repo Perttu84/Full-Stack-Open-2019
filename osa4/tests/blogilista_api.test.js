@@ -137,16 +137,16 @@ describe('deleting a single blog works as expected', () => {
       .delete(`/api/blogs/${blogToDelete.id}`)
       .expect(204)
 
-   const blogsAtEnd = await blogsInDb()
-   expect(blogsAtEnd.length).toBe(blogsAtStart.length - 1)
+    const blogsAtEnd = await blogsInDb()
+    expect(blogsAtEnd.length).toBe(blogsAtStart.length - 1)
 
-   const titles = blogsAtEnd.map(blog => blog.title)
+    const titles = blogsAtEnd.map(blog => blog.title)
 
-   expect(titles).not.toContain(blogToDelete.title)
+    expect(titles).not.toContain(blogToDelete.title)
   })
 
   test('if id is malformatted expect status code 400 and error text malformatted id', async () => {
-    error = await api
+    const error = await api
       .delete('/api/blogs/1').
       expect(400)
 
@@ -154,7 +154,22 @@ describe('deleting a single blog works as expected', () => {
   })
 })
 
+describe('updating a blog works as expected', () => {
+  test('the change can be found in database when id is found in database', async () => {
+    const blogsAtStart = await blogsInDb()
+    const blogToUpdate = blogsAtStart[0]
 
+    await api
+      .put(`/api/blogs/${blogToUpdate.id}`)
+      .send({
+        likes: blogToUpdate.likes + 1
+      })
+      .expect(200)
+    const blogsAtEnd = await blogsInDb()
+
+    expect(blogsAtEnd[0].likes).toBe(blogsAtStart[0].likes+1)
+  })
+})
 
 afterAll(() => {
   mongoose.connection.close()

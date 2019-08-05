@@ -27,6 +27,11 @@ const initialBlogs = [
   }
 ]
 
+const blogsInDb = async () => {
+  const blogs = await Blog.find({})
+  return blogs.map(blog => blog.toJSON())
+}
+
 beforeEach(async () => {
   await Blog.deleteMany({})
 
@@ -122,6 +127,34 @@ describe('adding a blog works as expected', () => {
       .expect(400)
   })
 })
+
+describe('deleting a single blog works as expected', () => {
+  test('deleted blog is not found in db and status code 204 is returned when id is found in db', async () => {
+    const blogsAtStart = await blogsInDb()
+    const blogToDelete = blogsAtStart[0]
+
+    await api
+      .delete(`/api/blogs/${blogToDelete.id}`)
+      .expect(204)
+
+   const blogsAtEnd = await blogsInDb()
+   expect(blogsAtEnd.length).toBe(blogsAtStart.length - 1)
+
+   const titles = blogsAtEnd.map(blog => blog.title)
+
+   expect(titles).not.toContain(blogToDelete.title)
+  })
+
+  test('if id is malformatted expect status code 400 and error text malformatted id', async () => {
+    error = await api
+      .delete('/api/blogs/1').
+      expect(400)
+
+    expect(error.body.error).toBe('malformatted id')
+  })
+})
+
+
 
 afterAll(() => {
   mongoose.connection.close()

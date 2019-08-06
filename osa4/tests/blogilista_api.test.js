@@ -11,7 +11,7 @@ const initialBlogs = [
     title: 'Testi',
     author: 'Perttu Punakallio',
     url: 'http://blogi.fi',
-    likes: 10
+    likes: 10,
   },
   {
     title: 'Mies',

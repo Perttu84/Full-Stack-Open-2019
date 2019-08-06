@@ -60,6 +60,49 @@ describe('when there is initially one user at db', () => {
     const usersAtEnd = await usersInDb()
     expect(usersAtEnd.length).toBe(usersAtStart.length)
   })
+
+  test('creation fails with proper statuscode and message if username shorter than 3 characters', async () => {
+    const usersAtStart = await usersInDb()
+
+    const newUser = {
+      username: 'ab',
+      name: 'Superuser',
+      password: 'salainen',
+    }
+
+    const result = await api
+      .post('/api/users')
+      .send(newUser)
+      .expect(400)
+      .expect('Content-Type', /application\/json/)
+
+    expect(result.body.error).toContain('is shorter than the minimum allowed length')
+
+    const usersAtEnd = await usersInDb()
+    expect(usersAtEnd.length).toBe(usersAtStart.length)
+  })
+
+  test('creation fails with proper statuscode and message if password shorter than 3 characters', async () => {
+    const usersAtStart = await usersInDb()
+
+    const newUser = {
+      username: 'abc',
+      name: 'Superuser',
+      password: 'a1',
+    }
+
+    const result = await api
+      .post('/api/users')
+      .send(newUser)
+      .expect(400)
+      .expect('Content-Type', /application\/json/)
+
+    expect(result.body.error).toContain('Password too short')
+
+    const usersAtEnd = await usersInDb()
+    expect(usersAtEnd.length).toBe(usersAtStart.length)
+  })
+
 })
 
 afterAll(() => {

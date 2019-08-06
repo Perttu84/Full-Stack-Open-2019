@@ -6,42 +6,70 @@ const api = supertest(app)
 
 const Blog = require('../models/blog')
 
+const User = require('../models/user')
+
 const initialBlogs = [
   {
     title: 'Testi',
     author: 'Perttu Punakallio',
     url: 'http://blogi.fi',
-    likes: 10,
-  },
-  {
-    title: 'Mies',
-    author: 'Erkki Esimerkki',
-    url: 'http://mies.com',
-    likes: 100
-  },
-  {
-    title: 'Höpöhöpö',
-    author: 'Jaska',
-    url: 'http://huuhaa.uk',
-    likes: 69
-  }
-]
+      likes: 10,
+    },
+    {
+      title: 'Mies',
+      author: 'Erkki Esimerkki',
+      url: 'http://mies.com',
+      likes: 100
+    },
+    {
+      title: 'Höpöhöpö',
+      author: 'Jaska',
+      url: 'http://huuhaa.uk',
+      likes: 69
+    }
+  ]
 
 const blogsInDb = async () => {
   const blogs = await Blog.find({})
   return blogs.map(blog => blog.toJSON())
 }
 
+const usersInDb = async () => {
+  const users = await User.find({})
+  return users.map(user => user.toJSON())
+}
+
 beforeEach(async () => {
   await Blog.deleteMany({})
+  await User.deleteMany({})
+  const user = new User({ username: 'root', password: 'sekret' })
+  const newUser = await user.save()
 
-  let blogObject = new Blog(initialBlogs[0])
+  let blogObject = new Blog({
+    title: initialBlogs[0].title,
+    author: initialBlogs[0].author,
+    url: initialBlogs[0].author,
+    likes: initialBlogs[0].likes,
+    userId: newUser.id
+  })
   await blogObject.save()
 
-  blogObject = new Blog(initialBlogs[1])
+  blogObject = new Blog({
+    title: initialBlogs[1].title,
+    author: initialBlogs[1].author,
+    url: initialBlogs[1].author,
+    likes: initialBlogs[1].likes,
+    userId: newUser.id
+  })
   await blogObject.save()
 
-  blogObject = new Blog(initialBlogs[2])
+  blogObject = new Blog({
+    title: initialBlogs[2].title,
+    author: initialBlogs[2].author,
+    url: initialBlogs[2].author,
+    likes: initialBlogs[2].likes,
+    userId: newUser.id
+  })
   await blogObject.save()
 })
 
@@ -66,11 +94,13 @@ describe('format and number of blogs in database', () => {
 
 describe('adding a blog works as expected', () => {
   test('number of blogs is increased by one and the title is correct', async () => {
+    const users = await usersInDb()
     const newBlog = {
       title: 'New Blog',
       author: 'Tester',
       url: 'http://newblog.com',
-      likes: 5
+      likes: 5,
+      userId: users[0].id
     }
     await api
       .post('/api/blogs')
@@ -89,10 +119,12 @@ describe('adding a blog works as expected', () => {
   })
 
   test('if likes is not defined for added blog a value of zero is given', async () => {
+    const users = await usersInDb()
     const newBlog = {
       title: 'New Blog',
       author: 'Tester',
-      url: 'http://newblog.com'
+      url: 'http://newblog.com',
+      userId: users[0].id
     }
 
     const response = await api
@@ -106,9 +138,11 @@ describe('adding a blog works as expected', () => {
   })
 
   test('if new blog is missing title expect status 400 Bad Request', async () => {
+    const users = await usersInDb()
     const newBlog = {
       author: 'Tester',
-      url: 'http://newblog.com'
+      url: 'http://newblog.com',
+      userId: users[0].id
     }
     await api
       .post('/api/blogs')
@@ -117,9 +151,11 @@ describe('adding a blog works as expected', () => {
   })
 
   test('if new blog is missing url expect status 400 Bad Request', async () => {
+    const users = await usersInDb()
     const newBlog = {
       title: 'New Blog',
-      author: 'Tester'
+      author: 'Tester',
+      userId: users[0].id
     }
     await api
       .post('/api/blogs')

@@ -13,21 +13,21 @@ const initialBlogs = [
     title: 'Testi',
     author: 'Perttu Punakallio',
     url: 'http://blogi.fi',
-      likes: 10,
-    },
-    {
-      title: 'Mies',
-      author: 'Erkki Esimerkki',
-      url: 'http://mies.com',
-      likes: 100
-    },
-    {
-      title: 'Höpöhöpö',
-      author: 'Jaska',
-      url: 'http://huuhaa.uk',
-      likes: 69
-    }
-  ]
+    likes: 10,
+  },
+  {
+    title: 'Mies',
+    author: 'Erkki Esimerkki',
+    url: 'http://mies.com',
+    likes: 100
+  },
+  {
+    title: 'Höpöhöpö',
+    author: 'Jaska',
+    url: 'http://huuhaa.uk',
+    likes: 69
+  }
+]
 
 const blogsInDb = async () => {
   const blogs = await Blog.find({})

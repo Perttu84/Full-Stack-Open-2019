@@ -4,7 +4,9 @@ const errorHandler = (error, request, response, next) => {
   } else if (error.name === 'CastError' && error.kind === 'ObjectId') {
     return response.status(400).send({ error: 'malformatted id' })
   } else if (error.name === 'TypeError') {
-    return response.status(400).send({error: 'id not found in database'})
+    return response.status(400).send({ error: 'id not found in database' })
+  } else if (error.name === 'JsonWebTokenError') {
+    return response.status(401).send({ error: 'invalid token' })
   }
 
   next(error)

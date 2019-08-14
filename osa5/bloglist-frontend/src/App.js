@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import Blog from './components/Blog'
 import Notification from './components/Notification'
 import NewBlogForm from './components/NewBlogForm'
+import Togglable from './components/Togglable'
 import blogService from './services/blogs'
 import loginService from './services/login' 
 
@@ -15,7 +16,6 @@ const App = () => {
   const [ newBlogName, setNewBlogName ] = useState('')
   const [ newBlogAuthor, setNewBlogAuthor ] = useState('')
   const [ newBlogUrl, setNewBlogUrl ] = useState('')
-  const [ newBlogFormVisible, setNewBlogFormVisible ] = useState(false)
 
   useEffect(() => {
     const fetchBlogs = async () =>  {
@@ -68,6 +68,8 @@ const App = () => {
     blogService.setToken(null)
   }
 
+const newBlogFormRef = React.createRef()
+
 const handleNewBlog = async (event) => {
   try {
     event.preventDefault()
@@ -79,6 +81,7 @@ const handleNewBlog = async (event) => {
     }
 
     const response = await blogService.create(blogObject)
+    newBlogFormRef.current.toggleVisibility()
     setBlogs(blogs.concat(response))
     setNewBlogName('')
     setNewBlogAuthor('')
@@ -124,16 +127,14 @@ const handleNewBlog = async (event) => {
     </form>
   )
 
+
+
   const newBlogForm = () => {
-    const hideWhenVisible = { display : newBlogFormVisible ? 'none' : '' }
-    const showWhenVisible = { display : newBlogFormVisible ? '' : 'none' }
 
     return (
       <div>
-        <div style={hideWhenVisible}>
-          <button onClick={() => setNewBlogFormVisible(true)}>new note</button>
-        </div>
-        <div style={showWhenVisible}>
+        <Togglable buttonLabel="new note" ref={newBlogFormRef}>
+          <h2>create new</h2>
           <NewBlogForm
             handleSubmit={handleNewBlog}
             handleNameChange={({ target }) => setNewBlogName(target.value)}
@@ -143,8 +144,7 @@ const handleNewBlog = async (event) => {
             newBlogAuthor={newBlogAuthor}
             newBlogUrl={newBlogUrl}
           />
-          <button onClick={() => setNewBlogFormVisible(false)}>cancel</button>
-        </div>
+          </Togglable>
       </div>
     )
   }
@@ -167,7 +167,6 @@ const handleNewBlog = async (event) => {
           {user.name} logged in
           <button onClick={() => handleLogout()}>logout</button>
         </p>
-        <h2>create new</h2>
         {newBlogForm()}
         {blogs.map(blog =>
         <Blog key={blog.id} blog={blog} />

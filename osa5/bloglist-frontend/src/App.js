@@ -20,7 +20,7 @@ const App = () => {
   useEffect(() => {
     const fetchBlogs = async () =>  {
       const blogs = await blogService.getAll()
-      setBlogs(blogs)
+      setBlogs(blogs.sort(function(a,b) {return b.likes-a.likes}))
     }
     const loggedUserJSON = window.localStorage.getItem('loggedUser')
     if (loggedUserJSON) {
@@ -51,7 +51,7 @@ const App = () => {
         setMessageType(null)
       }, 2000)
       const blogs = await blogService.getAll()
-      setBlogs(blogs)
+      setBlogs(blogs.sort(function(a,b) {return b.likes-a.likes}))
     } catch (exception) {
       setMessage('Wrong username or password')
       setMessageType('error')

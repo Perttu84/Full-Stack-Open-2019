@@ -31,6 +31,17 @@ const App = () => {
     }
   }, [])
 
+
+
+  const handleRemoveClick = async (blog) => {
+    const result = window.confirm(`Remove blog ${blog.title} by ${blog.author}?`)
+    if (result) {
+      await blogService.remove(blog.id)
+      const blogs = await blogService.getAll()
+      setBlogs(blogs.sort(function(a,b) {return b.likes-a.likes}))
+    }
+  }
+
   const handleLogin = async (event) => {
     event.preventDefault()
     try {
@@ -77,12 +88,13 @@ const handleNewBlog = async (event) => {
       title: newBlogName,
       author: newBlogAuthor,
       url: newBlogUrl,
-      user: user.id
     }
 
     const response = await blogService.create(blogObject)
+    console.log(response)
     newBlogFormRef.current.toggleVisibility()
-    setBlogs(blogs.concat(response))
+    const blogs = await blogService.getAll()
+    setBlogs(blogs.sort(function(a,b) {return b.likes-a.likes}))
     setNewBlogName('')
     setNewBlogAuthor('')
     setNewBlogUrl('')
@@ -169,7 +181,7 @@ const handleNewBlog = async (event) => {
         </p>
         {newBlogForm()}
         {blogs.map(blog =>
-        <Blog key={blog.id} blog={blog} />
+        <Blog key={blog.id} blog={blog} user={user} handleRemoveClick={handleRemoveClick}/>
       )}
     </div>
   )

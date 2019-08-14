@@ -45,4 +45,5 @@ const Blog = ({ blog, user, handleRemoveClick }) => {
       </div>
   )
 }
+
 export default Blog

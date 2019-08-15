@@ -1,5 +1,5 @@
 import React from 'react'
-import { render, fireEvent, cleanup } from '@testing-library/react'
+import { render, fireEvent } from '@testing-library/react'
 import Blog from './Blog'
 
 describe('Blog component', () => {
@@ -20,7 +20,7 @@ describe('Blog component', () => {
     username: 'pertsa'
   }
 
-    beforeEach(() => {
+  beforeEach(() => {
     component = render(
       <Blog blog={blog} user={user} />
     )

@@ -1,5 +1,5 @@
 import React from 'react'
-import { render, fireEvent, cleanup } from '@testing-library/react'
+import { render, fireEvent } from '@testing-library/react'
 import SimpleBlog from './SimpleBlog'
 
 test('renders content', () => {
@@ -27,7 +27,7 @@ test('renders content', () => {
 })
 
 test('clicking the button twice calls event handler twice', () => {
-    const blog = {
+  const blog = {
     title: 'Testi-title',
     author: 'Perttu Punakallio',
     likes: 10
@@ -42,7 +42,7 @@ test('clicking the button twice calls event handler twice', () => {
   const button = getByText('like')
 
   for (let i = 0; i < 2; i++) {
-    fireEvent.click(button)    
+    fireEvent.click(button)
   }
 
   expect(mockHandler.mock.calls.length).toBe(2)

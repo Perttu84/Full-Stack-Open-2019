@@ -1,6 +1,6 @@
 import React from 'react'
 import '@testing-library/jest-dom/extend-expect'
-import { render, cleanup } from '@testing-library/react'
+import { render, fireEvent, cleanup } from '@testing-library/react'
 import SimpleBlog from './SimpleBlog'
 
 afterEach(cleanup)
@@ -27,4 +27,26 @@ test('renders content', () => {
   expect(component.container).toHaveTextContent(
     'blog has 10 likes'
   )
+})
+
+test('clicking the button twice calls event handler twice', () => {
+    const blog = {
+    title: 'Testi-title',
+    author: 'Perttu Punakallio',
+    likes: 10
+  }
+
+  const mockHandler = jest.fn()
+
+  const { getByText } = render(
+    <SimpleBlog blog={blog} onClick={mockHandler} />
+  )
+
+  const button = getByText('like')
+
+  for (let i = 0; i < 2; i++) {
+    fireEvent.click(button)    
+  }
+
+  expect(mockHandler.mock.calls.length).toBe(2)
 })

@@ -4,11 +4,11 @@ import Notification from './components/Notification'
 import NewBlogForm from './components/NewBlogForm'
 import Togglable from './components/Togglable'
 import blogService from './services/blogs'
-import loginService from './services/login' 
+import loginService from './services/login'
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
-  const [username, setUsername] = useState('') 
+  const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
   const [message, setMessage] = useState(null)
@@ -79,47 +79,47 @@ const App = () => {
     blogService.setToken(null)
   }
 
-const newBlogFormRef = React.createRef()
+  const newBlogFormRef = React.createRef()
 
-const handleNewBlog = async (event) => {
-  try {
-    event.preventDefault()
-    const blogObject = {
-      title: newBlogName,
-      author: newBlogAuthor,
-      url: newBlogUrl,
+  const handleNewBlog = async (event) => {
+    try {
+      event.preventDefault()
+      const blogObject = {
+        title: newBlogName,
+        author: newBlogAuthor,
+        url: newBlogUrl,
+      }
+
+      const response = await blogService.create(blogObject)
+      console.log(response)
+      newBlogFormRef.current.toggleVisibility()
+      const blogs = await blogService.getAll()
+      setBlogs(blogs.sort(function(a,b) {return b.likes-a.likes}))
+      setNewBlogName('')
+      setNewBlogAuthor('')
+      setNewBlogUrl('')
+      setMessage(`a new blog ${newBlogName} by ${newBlogAuthor} added succesfully`)
+      setMessageType('success')
+      setTimeout(() => {
+        setMessage(null)
+        setMessageType(null)
+      }, 2000)
+    } catch(exception) {
+      setMessage(exception.response.data.error)
+      setMessageType('error')
+      setTimeout(() => {
+        setMessage(null)
+        setMessageType(null)
+      }, 2000)
+
     }
-
-    const response = await blogService.create(blogObject)
-    console.log(response)
-    newBlogFormRef.current.toggleVisibility()
-    const blogs = await blogService.getAll()
-    setBlogs(blogs.sort(function(a,b) {return b.likes-a.likes}))
-    setNewBlogName('')
-    setNewBlogAuthor('')
-    setNewBlogUrl('')
-    setMessage(`a new blog ${newBlogName} by ${newBlogAuthor} added succesfully`)
-    setMessageType('success')
-    setTimeout(() => {
-      setMessage(null)
-      setMessageType(null)
-      }, 2000)
-  } catch(exception) {
-    setMessage(exception.response.data.error)
-    setMessageType('error')
-    setTimeout(() => {
-      setMessage(null)
-      setMessageType(null)
-      }, 2000)
-
   }
-}
 
   const loginForm = () => (
     <form onSubmit={handleLogin}>
       <div>
         username
-          <input
+        <input
           type="text"
           value={username}
           name="Username"
@@ -128,7 +128,7 @@ const handleNewBlog = async (event) => {
       </div>
       <div>
         password
-          <input
+        <input
           type="password"
           value={password}
           name="Password"
@@ -156,7 +156,7 @@ const handleNewBlog = async (event) => {
             newBlogAuthor={newBlogAuthor}
             newBlogUrl={newBlogUrl}
           />
-          </Togglable>
+        </Togglable>
       </div>
     )
   }
@@ -175,12 +175,12 @@ const handleNewBlog = async (event) => {
     <div>
       <h2>blogs</h2>
       <Notification message={message} className={messageType} />
-        <p>
-          {user.name} logged in
-          <button onClick={() => handleLogout()}>logout</button>
-        </p>
-        {newBlogForm()}
-        {blogs.map(blog =>
+      <p>
+        {user.name} logged in
+        <button onClick={() => handleLogout()}>logout</button>
+      </p>
+      {newBlogForm()}
+      {blogs.map(blog =>
         <Blog key={blog.id} blog={blog} user={user} handleRemoveClick={handleRemoveClick}/>
       )}
     </div>

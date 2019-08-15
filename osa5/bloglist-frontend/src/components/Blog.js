@@ -5,11 +5,11 @@ const Blog = ({ blog, user, handleRemoveClick }) => {
   const [likes, setLikes] = useState(blog.likes)
   const handleLikeClick = () => {
     const updatedObject = {
-    user: blog.user.id,
-    likes: likes + 1,
-    author: blog.author,
-    title: blog.title,
-    url: blog.url
+      user: blog.user.id,
+      likes: likes + 1,
+      author: blog.author,
+      title: blog.title,
+      url: blog.url
     }
     const id = blog.id
     blogService.update(updatedObject, id)
@@ -42,7 +42,7 @@ const Blog = ({ blog, user, handleRemoveClick }) => {
       <button onClick={handleLikeClick}>like</button><br/>
       added by { blog.user.name }<br/>
       <button onClick={() => handleRemoveClick(blog)}>remove</button>
-      </div>
+    </div>
   )
 }
 

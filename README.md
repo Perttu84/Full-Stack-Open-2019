@@ -13,3 +13,6 @@ This repository contains my answers for course **Full Stack Open 2019**
     * [Maiden tiedot](/osa2/maiden_tiedot)
 * [Osa 4 - Blogilista](/osa4)
 * [Osa 5 - Blogilista-frontend](/osa5/bloglist-frontend)
+* [Osa 6](/osa6)
+    * [Unicafe-Redux](/osa6/unicafe-redux)
+    * [Anekdootit-Redux](/osa6/redux-anecdotes)

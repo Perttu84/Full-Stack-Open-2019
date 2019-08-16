@@ -1,11 +1,13 @@
 const blogs = [
   {
     title: 'Test-title',
-    author: 'Perttu Punakallio'
+    author: 'Perttu Punakallio',
+    id: 1
   },
   {
     title: 'Nothing',
-    author: 'Nobody'
+    author: 'Nobody',
+    id: 2
   }
 ]
 
@@ -13,4 +15,7 @@ const getAll = () => {
   return Promise.resolve(blogs)
 }
 
-export default { getAll }
+const setToken = () => {
+}
+
+export default { getAll, setToken }

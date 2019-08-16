@@ -5,17 +5,19 @@ import NewBlogForm from './components/NewBlogForm'
 import Togglable from './components/Togglable'
 import blogService from './services/blogs'
 import loginService from './services/login'
+import  { useField } from './hooks'
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
-  const [username, setUsername] = useState('')
-  const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
   const [message, setMessage] = useState(null)
   const [ messageType, setMessageType ] = useState(null)
   const [ newBlogName, setNewBlogName ] = useState('')
   const [ newBlogAuthor, setNewBlogAuthor ] = useState('')
   const [ newBlogUrl, setNewBlogUrl ] = useState('')
+
+  const username = useField('text')
+  const password = useField('password')
 
   useEffect(() => {
     const fetchBlogs = async () =>  {
@@ -45,16 +47,14 @@ const App = () => {
   const handleLogin = async (event) => {
     event.preventDefault()
     try {
-      const user = await loginService.login({
-        username, password,
-      })
+      const user = await loginService.login( { username: username.value, password: password.value } )
       window.localStorage.setItem(
         'loggedUser', JSON.stringify(user)
       )
       blogService.setToken(user.token)
       setUser(user)
-      setUsername('')
-      setPassword('')
+      username.reset()
+      password.reset()
       setMessage('Succesfully logged in')
       setMessageType('success')
       setTimeout(() => {
@@ -90,8 +90,7 @@ const App = () => {
         url: newBlogUrl,
       }
 
-      const response = await blogService.create(blogObject)
-      console.log(response)
+      await blogService.create(blogObject)
       newBlogFormRef.current.toggleVisibility()
       const blogs = await blogService.getAll()
       setBlogs(blogs.sort(function(a,b) {return b.likes-a.likes}))
@@ -119,21 +118,11 @@ const App = () => {
     <form onSubmit={handleLogin}>
       <div>
         username
-        <input
-          type="text"
-          value={username}
-          name="Username"
-          onChange={({ target }) => setUsername(target.value)}
-        />
+        <input {...username} reset={null}/>
       </div>
       <div>
         password
-        <input
-          type="password"
-          value={password}
-          name="Password"
-          onChange={({ target }) => setPassword(target.value)}
-        />
+        <input {...password} reset={null}/>
       </div>
       <button type="submit">login</button>
     </form>

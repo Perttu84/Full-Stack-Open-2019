@@ -4,7 +4,10 @@ const App = (props) => {
   const anecdotes = props.store.getState()
 
   const vote = (id) => {
-    console.log('vote', id)
+    props.store.dispatch({
+      type: 'VOTE',
+      data: { id }
+    })
   }
 
   return (

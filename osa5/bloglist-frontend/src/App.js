@@ -12,12 +12,12 @@ const App = () => {
   const [user, setUser] = useState(null)
   const [message, setMessage] = useState(null)
   const [ messageType, setMessageType ] = useState(null)
-  const [ newBlogName, setNewBlogName ] = useState('')
-  const [ newBlogAuthor, setNewBlogAuthor ] = useState('')
-  const [ newBlogUrl, setNewBlogUrl ] = useState('')
 
   const username = useField('text')
   const password = useField('password')
+  const newBlogName = useField('text')
+  const newBlogAuthor = useField('text')
+  const newBlogUrl = useField('url')
 
   useEffect(() => {
     const fetchBlogs = async () =>  {
@@ -85,19 +85,19 @@ const App = () => {
     try {
       event.preventDefault()
       const blogObject = {
-        title: newBlogName,
-        author: newBlogAuthor,
-        url: newBlogUrl,
+        title: newBlogName.value,
+        author: newBlogAuthor.value,
+        url: newBlogUrl.value,
       }
 
       await blogService.create(blogObject)
       newBlogFormRef.current.toggleVisibility()
       const blogs = await blogService.getAll()
       setBlogs(blogs.sort(function(a,b) {return b.likes-a.likes}))
-      setNewBlogName('')
-      setNewBlogAuthor('')
-      setNewBlogUrl('')
-      setMessage(`a new blog ${newBlogName} by ${newBlogAuthor} added succesfully`)
+      newBlogName.reset()
+      newBlogAuthor.reset()
+      newBlogUrl.reset()
+      setMessage(`a new blog ${newBlogName.value} by ${newBlogAuthor.value} added succesfully`)
       setMessageType('success')
       setTimeout(() => {
         setMessage(null)
@@ -138,9 +138,6 @@ const App = () => {
           <h2>create new</h2>
           <NewBlogForm
             handleSubmit={handleNewBlog}
-            handleNameChange={({ target }) => setNewBlogName(target.value)}
-            handleAuthorChange={({ target }) => setNewBlogAuthor(target.value)}
-            handleUrlChange={({ target }) => setNewBlogUrl(target.value)}
             newBlogName={newBlogName}
             newBlogAuthor={newBlogAuthor}
             newBlogUrl={newBlogUrl}

@@ -11,11 +11,9 @@ const AnecdoteList = (props) => {
       props.setMessage(null)
     }, 5000)
   }
-  const anecdotes = props.anecdotes
-  const filterValue = props.filter
-  const anecdotesToShow = anecdotes.filter(anecdote => anecdote.content.toLowerCase().includes(filterValue.toLowerCase()))
+
   return (<div>
-    {anecdotesToShow.map(anecdote =>
+    {props.visibleAnecdotes.map(anecdote =>
       <div key={anecdote.id}>
         <div>
           {anecdote.content}
@@ -30,10 +28,13 @@ const AnecdoteList = (props) => {
   )
 }
 
+const anecdotesToShow = ({ anecdotes, filter }) => {
+  return anecdotes.filter(anecdote => anecdote.content.toLowerCase().includes(filter.toLowerCase()))
+}
+
 const mapStateToProps = (state) => {
   return {
-    anecdotes: state.anecdotes,
-    filter: state.filter,
+    visibleAnecdotes: anecdotesToShow(state)
   }
 }
 

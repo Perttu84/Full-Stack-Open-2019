@@ -13,8 +13,10 @@ const AnecdoteList = (props) => {
     }, 5000)
   }
   const anecdotes = props.store.getState().anecdotes
+  const filterValue = props.store.getState().filter
+  const anecdotesToShow = anecdotes.filter(anecdote => anecdote.content.toLowerCase().includes(filterValue.toLowerCase()))
     return (<div>
-      {anecdotes.map(anecdote =>
+      {anecdotesToShow.map(anecdote =>
         <div key={anecdote.id}>
           <div>
             {anecdote.content}

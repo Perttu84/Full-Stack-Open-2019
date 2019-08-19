@@ -19,7 +19,7 @@ const asObject = (anecdote) => {
 
 const initialState = anecdotesAtStart.map(asObject).sort((a, b) => (a.votes > b.votes) ? -1 : 1)
 
-const reducer = (state = initialState, action) => {
+const anecdoteReducer = (state = initialState, action) => {
   switch (action.type) {
     case 'VOTE':
       const id = action.data.id
@@ -53,4 +53,4 @@ export const vote = (id) => {
   }
 }
 
-export default reducer
+export default anecdoteReducer

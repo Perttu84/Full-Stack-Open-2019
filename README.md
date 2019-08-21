@@ -16,3 +16,4 @@ This repository contains my answers for course **Full Stack Open 2019**
 * [Osa 6](/osa6)
     * [Unicafe-Redux](/osa6/unicafe-redux)
     * [Anekdootit-Redux](/osa6/redux-anecdotes)
+* [Osa 7](/osa7)

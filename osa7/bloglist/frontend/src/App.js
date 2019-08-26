@@ -8,9 +8,9 @@ import blogService from './services/blogs'
 import loginService from './services/login'
 import  { useField } from './hooks'
 import { setMessage } from './reducers/notificationReducer'
+import { initializeBlogs, removeBlog, createBlog } from './reducers/blogReducer'
 
 const App = (props) => {
-  const [blogs, setBlogs] = useState([])
   const [user, setUser] = useState(null)
 
   const username = useField('text')
@@ -20,27 +20,21 @@ const App = (props) => {
   const newBlogUrl = useField('url')
 
   useEffect(() => {
-    const fetchBlogs = async () =>  {
-      const blogs = await blogService.getAll()
-      setBlogs(blogs.sort(function(a,b) {return b.likes-a.likes}))
-    }
     const loggedUserJSON = window.localStorage.getItem('loggedUser')
     if (loggedUserJSON) {
       const user = JSON.parse(loggedUserJSON)
       blogService.setToken(user.token)
       setUser(user)
-      fetchBlogs()
+      props.initializeBlogs()
     }
-  }, [])
+  }, [props])
 
 
 
   const handleRemoveClick = async (blog) => {
     const result = window.confirm(`Remove blog ${blog.title} by ${blog.author}?`)
     if (result) {
-      await blogService.remove(blog.id)
-      const blogs = await blogService.getAll()
-      setBlogs(blogs.sort(function(a,b) {return b.likes-a.likes}))
+      props.removeBlog(blog)
     }
   }
 
@@ -56,8 +50,7 @@ const App = (props) => {
       username.reset()
       password.reset()
       props.setMessage('Succesfully logged in', 'success', 2)
-      const blogs = await blogService.getAll()
-      setBlogs(blogs.sort(function(a,b) {return b.likes-a.likes}))
+      props.initializeBlogs()
     } catch (exception) {
       props.setMessage('Wrong username or password', 'error', 2)
     }
@@ -80,10 +73,11 @@ const App = (props) => {
         url: newBlogUrl.value,
       }
 
-      await blogService.create(blogObject)
+      props.createBlog(blogObject)
+      /*await blogService.create(blogObject)*/
       newBlogFormRef.current.toggleVisibility()
-      const blogs = await blogService.getAll()
-      setBlogs(blogs.sort(function(a,b) {return b.likes-a.likes}))
+      /*const blogs = await blogService.getAll()
+      setBlogs(blogs.sort(function(a,b) {return b.likes-a.likes}))*/
       newBlogName.reset()
       newBlogAuthor.reset()
       newBlogUrl.reset()
@@ -145,11 +139,17 @@ const App = (props) => {
         <button onClick={() => handleLogout()}>logout</button>
       </p>
       {newBlogForm()}
-      {blogs.map(blog =>
+      {props.blogs.map(blog =>
         <Blog key={blog.id} blog={blog} user={user} handleRemoveClick={handleRemoveClick}/>
       )}
     </div>
   )
 }
 
-export default connect(null, { setMessage })(App)
+const mapStateToProps = (state) => {
+  return {
+    blogs: state.blogs
+  }
+}
+
+export default connect(mapStateToProps, { setMessage, initializeBlogs, createBlog, removeBlog })(App)

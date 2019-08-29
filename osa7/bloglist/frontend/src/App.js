@@ -1,5 +1,9 @@
 import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
+import {
+  BrowserRouter as Router,
+  Route, Link, Redirect, withRouter
+} from 'react-router-dom'
 import Blog from './components/Blog'
 import Notification from './components/Notification'
 import NewBlogForm from './components/NewBlogForm'
@@ -10,9 +14,12 @@ import  { useField } from './hooks'
 import { setMessage } from './reducers/notificationReducer'
 import { initializeBlogs, removeBlog, createBlog } from './reducers/blogReducer'
 import { setUser, logoutUser } from './reducers/userReducer'
+import { initializeUsers } from './reducers/usersReducer'
+
 
 const App = (props) => {
 
+  const padding = { padding: 5 }
   const username = useField('text')
   const password = useField('password')
   const newBlogName = useField('text')
@@ -26,6 +33,7 @@ const App = (props) => {
       blogService.setToken(user.token)
       props.setUser(user)
       props.initializeBlogs()
+      props.initializeUsers()
     }
   }, [])
 
@@ -49,6 +57,7 @@ const App = (props) => {
       password.reset()
       props.setMessage('Succesfully logged in', 'success', 2)
       props.initializeBlogs()
+      props.initializeUsers()
     } catch (exception) {
       props.setMessage('Wrong username or password', 'error', 2)
     }
@@ -115,6 +124,39 @@ const App = (props) => {
     )
   }
 
+  const Blogs = () => {
+    return (
+      <div>
+        {newBlogForm()}
+        {props.blogs.map(blog =>
+          <Blog key={blog.id} blog={blog} user={props.user} handleRemoveClick={handleRemoveClick}/>
+        )}
+      </div>
+    )
+  }
+
+  const Users = () => {
+    return (
+      <div>
+        <h2>Users</h2>
+        <table>
+          <tbody>
+            <tr>
+              <th></th>
+              <th>blogs created</th>
+            </tr>
+              {props.users.map(user =>
+                <tr key={user.id}>
+                  <td>{user.name}</td>
+                  <td>{user.blogs.length}</td>
+                </tr>
+              )}
+              </tbody>
+            </table>
+      </div>
+    )
+  }
+
   if (props.user === null) {
     return (
       <div>
@@ -133,10 +175,10 @@ const App = (props) => {
         {props.user.name} logged in
         <button onClick={() => handleLogout()}>logout</button>
       </p>
-      {newBlogForm()}
-      {props.blogs.map(blog =>
-        <Blog key={blog.id} blog={blog} user={props.user} handleRemoveClick={handleRemoveClick}/>
-      )}
+      <Router>
+        <Route exact path="/" render={() => <Blogs />} />
+        <Route path="/users" render={() => <Users />} />
+      </Router>
     </div>
   )
 }
@@ -144,8 +186,9 @@ const App = (props) => {
 const mapStateToProps = (state) => {
   return {
     blogs: state.blogs,
-    user: state.user
+    user: state.user,
+    users: state.users
   }
 }
 
-export default connect(mapStateToProps, { setMessage, initializeBlogs, createBlog, removeBlog, setUser, logoutUser })(App)
+export default connect(mapStateToProps, { setMessage, initializeBlogs, createBlog, removeBlog, setUser, logoutUser, initializeUsers })(App)

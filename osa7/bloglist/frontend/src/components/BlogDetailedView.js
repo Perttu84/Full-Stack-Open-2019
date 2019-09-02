@@ -1,7 +1,10 @@
 import React, { useState } from 'react'
 import blogService from '../services/blogs'
-const Blog = ({ blog, user, handleRemoveClick }) => {
-  const [showDetails, setShowDetails] = useState(false)
+
+const BlogDetailedView = (props) => {
+  const blog = props.blog
+  const user = props.user
+  const handleRemoveClick = props.handleRemoveClick
   const [likes, setLikes] = useState(blog.likes)
   const handleLikeClick = () => {
     const updatedObject = {
@@ -13,19 +16,13 @@ const Blog = ({ blog, user, handleRemoveClick }) => {
     }
     const id = blog.id
     blogService.update(updatedObject, id)
+    props.initBlogs()
     setLikes(likes+1)
   }
 
-  if (!showDetails) {
-    return (
-      <div className='blog' onClick={() => setShowDetails(!showDetails)}>
-        {blog.title} {blog.author}
-      </div>
-    )
-  }
   if (user.username !== blog.user.username) {
     return (
-      <div className='blog' onClick={() => setShowDetails(!showDetails)}>
+      <div className='blog'>
         {blog.title} {blog.author}<br/>
         <a href={blog.url}>{blog.url}</a><br/>
         {likes} likes
@@ -35,7 +32,7 @@ const Blog = ({ blog, user, handleRemoveClick }) => {
     )
   }
   return (
-    <div className='blog' onClick={() => setShowDetails(!showDetails)}>
+    <div className='blog'>
       {blog.title} {blog.author}<br/>
       <a href={blog.url}>{blog.url}</a><br/>
       {likes} likes
@@ -46,4 +43,4 @@ const Blog = ({ blog, user, handleRemoveClick }) => {
   )
 }
 
-export default Blog
+export default BlogDetailedView

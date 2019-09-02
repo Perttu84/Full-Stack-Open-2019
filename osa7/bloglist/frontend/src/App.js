@@ -4,10 +4,10 @@ import {
   BrowserRouter as Router,
   Route, Link, Redirect, withRouter
 } from 'react-router-dom'
-import Blog from './components/Blog'
 import Notification from './components/Notification'
 import NewBlogForm from './components/NewBlogForm'
 import Togglable from './components/Togglable'
+import BlogDetailedView from './components/BlogDetailedView'
 import blogService from './services/blogs'
 import loginService from './services/login'
 import  { useField } from './hooks'
@@ -85,7 +85,11 @@ const App = (props) => {
     </form>
   )
 
-
+  const BlogListView = ({blog}) => (
+    <div className='blog'>
+      <Link to={`/blogs/${blog.id}`}>{blog.title} {blog.author}</Link>
+    </div>
+  )
 
   const newBlogForm = () => {
 
@@ -104,7 +108,9 @@ const App = (props) => {
       <div>
         {newBlogForm()}
         {props.blogs.map(blog =>
-          <Blog key={blog.id} blog={blog} user={props.user} handleRemoveClick={handleRemoveClick}/>
+          /*<Blog key={blog.id} blog={blog} user={props.user} handleRemoveClick={handleRemoveClick}/>*/
+          <BlogListView key={blog.id} blog={blog}/>
+          /*<Link to={`/blogs/${blog.id}`}>{blog.title}</Link>*/
         )}
       </div>
     )
@@ -137,20 +143,33 @@ const App = (props) => {
       return null
     }
     return (
-    <div>
-      <h2>{user.name}</h2>
-      <h3>added blogs</h3>
-      <ul>
-        {user.blogs.map(blog =>
-          <li key={blog.id}>{blog.title}</li>
-          )}
-      </ul>
-    </div>
-  )
-}
+      <div>
+        <h2>{user.name}</h2>
+        <h3>added blogs</h3>
+        <ul>
+          {user.blogs.map(blog =>
+            <li key={blog.id}>{blog.title}</li>
+            )}
+        </ul>
+      </div>
+    )
+  }
 
   const userById = (id) =>
     props.users.find(a => a.id === id)
+
+  if (props.user === null) {
+    return (
+      <div>
+        <h2>Log in to application</h2>
+        <Notification />
+        {loginForm()}
+      </div>
+    )
+  }
+
+  const blogById = (id) =>
+    props.blogs.find(a => a.id === id)
 
   if (props.user === null) {
     return (
@@ -173,7 +192,9 @@ const App = (props) => {
       <Router>
         <Route exact path="/" render={() => <Blogs />} />
         <Route exact path="/users" render={() => <Users />} />
+        <Route exact path="/blogs" render={() => <Redirect to="/" />} />
         <Route exact path="/users/:id" render={({ match }) => <User user={userById(match.params.id)} />} />
+        <Route exact path="/blogs/:id" render={({ match }) => <BlogDetailedView blog={blogById(match.params.id)}  user={props.user} handleRemoveClick={handleRemoveClick} initBlogs={props.initializeBlogs}/>} />
       </Router>
     </div>
   )

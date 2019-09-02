@@ -22,9 +22,7 @@ const App = (props) => {
   const padding = { padding: 5 }
   const username = useField('text')
   const password = useField('password')
-  const newBlogName = useField('text')
-  const newBlogAuthor = useField('text')
-  const newBlogUrl = useField('url')
+
 
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem('loggedUser')
@@ -71,25 +69,7 @@ const App = (props) => {
 
   const newBlogFormRef = React.createRef()
 
-  const handleNewBlog = async (event) => {
-    try {
-      event.preventDefault()
-      const blogObject = {
-        title: newBlogName.value,
-        author: newBlogAuthor.value,
-        url: newBlogUrl.value,
-      }
 
-      props.createBlog(blogObject)
-      newBlogFormRef.current.toggleVisibility()
-      newBlogName.reset()
-      newBlogAuthor.reset()
-      newBlogUrl.reset()
-      props.setMessage(`a new blog ${newBlogName.value} by ${newBlogAuthor.value} added succesfully`, 'success', 2)
-    } catch(exception) {
-      props.setMessage(exception.response.data.error, 'error', 2)
-    }
-  }
 
   const loginForm = () => (
     <form onSubmit={handleLogin}>
@@ -113,12 +93,7 @@ const App = (props) => {
       <div>
         <Togglable buttonLabel="new note" ref={newBlogFormRef}>
           <h2>create new</h2>
-          <NewBlogForm
-            handleSubmit={handleNewBlog}
-            newBlogName={newBlogName}
-            newBlogAuthor={newBlogAuthor}
-            newBlogUrl={newBlogUrl}
-          />
+          <NewBlogForm />
         </Togglable>
       </div>
     )
@@ -147,7 +122,7 @@ const App = (props) => {
             </tr>
               {props.users.map(user =>
                 <tr key={user.id}>
-                  <td>{user.name}</td>
+                  <td><Link to={`/users/${user.id}`}>{user.name}</Link></td>
                   <td>{user.blogs.length}</td>
                 </tr>
               )}
@@ -156,6 +131,26 @@ const App = (props) => {
       </div>
     )
   }
+
+  const User = ({ user }) => {
+    if (user === undefined) {
+      return null
+    }
+    return (
+    <div>
+      <h2>{user.name}</h2>
+      <h3>added blogs</h3>
+      <ul>
+        {user.blogs.map(blog =>
+          <li key={blog.id}>{blog.title}</li>
+          )}
+      </ul>
+    </div>
+  )
+}
+
+  const userById = (id) =>
+    props.users.find(a => a.id === id)
 
   if (props.user === null) {
     return (
@@ -177,7 +172,8 @@ const App = (props) => {
       </p>
       <Router>
         <Route exact path="/" render={() => <Blogs />} />
-        <Route path="/users" render={() => <Users />} />
+        <Route exact path="/users" render={() => <Users />} />
+        <Route exact path="/users/:id" render={({ match }) => <User user={userById(match.params.id)} />} />
       </Router>
     </div>
   )

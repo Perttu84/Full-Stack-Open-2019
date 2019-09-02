@@ -183,13 +183,15 @@ const App = (props) => {
 
   return (
     <div>
+    <Router>
+      <div className="menu">
+        <Link style={padding} to="/">blogs</Link>
+        <Link style={padding} to="/users">users</Link>
+          {props.user.name} logged in
+          <button onClick={() => handleLogout()}>logout</button>
+      </div>
       <h2>blogs</h2>
       <Notification />
-      <p>
-        {props.user.name} logged in
-        <button onClick={() => handleLogout()}>logout</button>
-      </p>
-      <Router>
         <Route exact path="/" render={() => <Blogs />} />
         <Route exact path="/users" render={() => <Users />} />
         <Route exact path="/blogs" render={() => <Redirect to="/" />} />

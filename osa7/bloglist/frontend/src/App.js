@@ -15,7 +15,7 @@ import { setMessage } from './reducers/notificationReducer'
 import { initializeBlogs, removeBlog, createBlog, createComment } from './reducers/blogReducer'
 import { setUser, logoutUser } from './reducers/userReducer'
 import { initializeUsers } from './reducers/usersReducer'
-import { Container } from 'semantic-ui-react'
+import { Container, Table } from 'semantic-ui-react'
 
 
 const App = (props) => {
@@ -87,9 +87,7 @@ const App = (props) => {
   )
 
   const BlogListView = ({blog}) => (
-    <div className='blog'>
       <Link to={`/blogs/${blog.id}`}>{blog.title} {blog.author}</Link>
-    </div>
   )
 
   const newBlogForm = () => {
@@ -108,11 +106,20 @@ const App = (props) => {
     return (
       <div>
         {newBlogForm()}
-        {props.blogs.map(blog =>
-          /*<Blog key={blog.id} blog={blog} user={props.user} handleRemoveClick={handleRemoveClick}/>*/
-          <BlogListView key={blog.id} blog={blog}/>
-          /*<Link to={`/blogs/${blog.id}`}>{blog.title}</Link>*/
-        )}
+        <Table striped>
+          <Table.Body>
+            {props.blogs.map(blog =>
+              <Table.Row key={blog.id}>
+                <Table.Cell>
+                  <Link to={`/blogs/${blog.id}`}>{blog.title}</Link>
+                </Table.Cell>
+                <Table.Cell>
+                  {blog.author}
+                </Table.Cell>
+              </Table.Row>
+            )}
+          </Table.Body>
+        </Table>
       </div>
     )
   }

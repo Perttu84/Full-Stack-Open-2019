@@ -15,6 +15,7 @@ import { setMessage } from './reducers/notificationReducer'
 import { initializeBlogs, removeBlog, createBlog, createComment } from './reducers/blogReducer'
 import { setUser, logoutUser } from './reducers/userReducer'
 import { initializeUsers } from './reducers/usersReducer'
+import { Container } from 'semantic-ui-react'
 
 
 const App = (props) => {
@@ -182,7 +183,7 @@ const App = (props) => {
   }
 
   return (
-    <div>
+    <Container>
     <Router>
       <div className="menu">
         <Link style={padding} to="/">blogs</Link>
@@ -198,7 +199,7 @@ const App = (props) => {
         <Route exact path="/users/:id" render={({ match }) => <User user={userById(match.params.id)} />} />
         <Route exact path="/blogs/:id" render={({ match }) => <BlogDetailedView blog={blogById(match.params.id)}  user={props.user} handleRemoveClick={handleRemoveClick} initBlogs={props.initializeBlogs}/>} />
       </Router>
-    </div>
+    </Container>
   )
 }
 

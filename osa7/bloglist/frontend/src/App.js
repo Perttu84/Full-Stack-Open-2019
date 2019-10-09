@@ -86,10 +86,6 @@ const App = (props) => {
     </form>
   )
 
-  const BlogListView = ({blog}) => (
-      <Link to={`/blogs/${blog.id}`}>{blog.title} {blog.author}</Link>
-  )
-
   const newBlogForm = () => {
 
     return (
@@ -128,20 +124,22 @@ const App = (props) => {
     return (
       <div>
         <h2>Users</h2>
-        <table>
-          <tbody>
-            <tr>
-              <th></th>
-              <th>blogs created</th>
-            </tr>
-              {props.users.map(user =>
-                <tr key={user.id}>
-                  <td><Link to={`/users/${user.id}`}>{user.name}</Link></td>
-                  <td>{user.blogs.length}</td>
-                </tr>
-              )}
-              </tbody>
-            </table>
+        <Table striped>
+          <Table.Header>
+            <Table.Row>
+              <Table.HeaderCell></Table.HeaderCell>
+              <Table.HeaderCell>blogs created</Table.HeaderCell>
+            </Table.Row>
+          </Table.Header>
+          <Table.Body>
+            {props.users.map(user =>
+              <Table.Row key={user.id}>
+                <Table.Cell><Link to={`/users/${user.id}`}>{user.name}</Link></Table.Cell>
+                <Table.Cell>{user.blogs.length}</Table.Cell>
+              </Table.Row>
+            )}
+          </Table.Body>
+        </Table>
       </div>
     )
   }

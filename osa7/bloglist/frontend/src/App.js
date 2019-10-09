@@ -12,7 +12,7 @@ import blogService from './services/blogs'
 import loginService from './services/login'
 import  { useField } from './hooks'
 import { setMessage } from './reducers/notificationReducer'
-import { initializeBlogs, removeBlog, createBlog } from './reducers/blogReducer'
+import { initializeBlogs, removeBlog, createBlog, createComment } from './reducers/blogReducer'
 import { setUser, logoutUser } from './reducers/userReducer'
 import { initializeUsers } from './reducers/usersReducer'
 
@@ -210,4 +210,4 @@ const mapStateToProps = (state) => {
   }
 }
 
-export default connect(mapStateToProps, { setMessage, initializeBlogs, createBlog, removeBlog, setUser, logoutUser, initializeUsers })(App)
+export default connect(mapStateToProps, { setMessage, initializeBlogs, createBlog, removeBlog, setUser, logoutUser, initializeUsers, createComment })(App)

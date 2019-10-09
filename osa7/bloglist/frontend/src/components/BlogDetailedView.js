@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import blogService from '../services/blogs'
+import NewCommentForm from './NewCommentForm'
 
 const BlogDetailedView = (props) => {
   const blog = props.blog
@@ -20,11 +21,11 @@ const BlogDetailedView = (props) => {
     setLikes(likes+1)
   }
 
-  const Comments = ({comments}) => {
-    if (comments.length > 0) {
+  const Comments = ({comments, blogId}) => {
       return (
         <div>
           <h3>Comments</h3>
+          <NewCommentForm blogId={blogId}/>
             <ul>
               {comments.map(comment =>
                 <li key={comment.id}>{comment.content}</li>
@@ -32,8 +33,6 @@ const BlogDetailedView = (props) => {
             </ul>
         </div>
       )
-    }
-    return null
   }
 
   if (user.username !== blog.user.username) {
@@ -44,7 +43,7 @@ const BlogDetailedView = (props) => {
         {likes} likes
         <button onClick={handleLikeClick}>like</button><br/>
         added by { blog.user.name }
-        <Comments comments={blog.comments} />
+        <Comments comments={blog.comments} blogId={blog.id}/>
       </div>
       
     )

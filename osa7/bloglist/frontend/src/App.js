@@ -15,7 +15,7 @@ import { setMessage } from './reducers/notificationReducer'
 import { initializeBlogs, removeBlog, createBlog, createComment } from './reducers/blogReducer'
 import { setUser, logoutUser } from './reducers/userReducer'
 import { initializeUsers } from './reducers/usersReducer'
-import { Container, Table, List, Form, Button } from 'semantic-ui-react'
+import { Container, Table, List, Form, Button, Menu } from 'semantic-ui-react'
 
 
 const App = (props) => {
@@ -162,11 +162,13 @@ const App = (props) => {
 
   if (props.user === null) {
     return (
-      <div>
-        <h2>Log in to application</h2>
-        <Notification />
-        {loginForm()}
-      </div>
+      <Container>
+        <div>
+          <h2>Log in to application</h2>
+          <Notification />
+          {loginForm()}
+        </div>
+      </Container>
     )
   }
 
@@ -186,11 +188,21 @@ const App = (props) => {
   return (
     <Container>
     <Router>
-      <div className="menu">
-        <Link style={padding} to="/">blogs</Link>
-        <Link style={padding} to="/users">users</Link>
-          {props.user.name} logged in
-          <button onClick={() => handleLogout()}>logout</button>
+      <div>
+        <Menu>
+          <Menu.Item link>
+            <Link style={padding} to="/">blogs</Link>
+          </Menu.Item>
+          <Menu.Item link>
+            <Link style={padding} to="/users">users</Link>
+          </Menu.Item>
+          <Menu.Item disabled>
+            {props.user.name} logged in
+          </Menu.Item>
+          <Menu.Item>
+            <Button onClick={() => handleLogout()}>logout</Button>
+          </Menu.Item>
+        </Menu>
       </div>
       <h2>blogs</h2>
       <Notification />

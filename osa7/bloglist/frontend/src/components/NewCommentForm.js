@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 import  { useField } from '../hooks'
 import { createComment } from '../reducers/blogReducer'
 import { setMessage } from '../reducers/notificationReducer'
+import { Form } from 'semantic-ui-react'
 
 const NewCommentForm = (props) => {
   const newComment = useField('text')
@@ -22,12 +23,12 @@ const NewCommentForm = (props) => {
   }
 
   return (
-    <form onSubmit={handleNewComment}>
-      <div>
-        <input {...newComment} reset={null}/>
-        <button type="submit">add comment</button>
-      </div>
-    </form>
+    <Form onSubmit={handleNewComment}>
+      <Form.Group>
+        <Form.Input {...newComment} reset={null}/>
+        <Form.Button type="submit">add comment</Form.Button>
+      </Form.Group>
+    </Form>
   )
 }
 

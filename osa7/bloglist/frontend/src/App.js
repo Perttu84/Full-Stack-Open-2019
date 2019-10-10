@@ -15,7 +15,7 @@ import { setMessage } from './reducers/notificationReducer'
 import { initializeBlogs, removeBlog, createBlog, createComment } from './reducers/blogReducer'
 import { setUser, logoutUser } from './reducers/userReducer'
 import { initializeUsers } from './reducers/usersReducer'
-import { Container, Table } from 'semantic-ui-react'
+import { Container, Table, List, Form, Button } from 'semantic-ui-react'
 
 
 const App = (props) => {
@@ -73,17 +73,13 @@ const App = (props) => {
 
 
   const loginForm = () => (
-    <form onSubmit={handleLogin}>
-      <div>
-        username
-        <input {...username} reset={null}/>
-      </div>
-      <div>
-        password
-        <input {...password} reset={null}/>
-      </div>
-      <button type="submit">login</button>
-    </form>
+    <Form onSubmit={handleLogin}>
+      <Form.Group>
+        <Form.Input {...username} reset={null} label='usename'/>
+        <Form.Input {...password} reset={null} label='password'/>
+      </Form.Group>
+      <Button type="submit">login</Button>
+    </Form>
   )
 
   const newBlogForm = () => {
@@ -152,11 +148,11 @@ const App = (props) => {
       <div>
         <h2>{user.name}</h2>
         <h3>added blogs</h3>
-        <ul>
+        <List>
           {user.blogs.map(blog =>
-            <li key={blog.id}>{blog.title}</li>
+            <List.Item key={blog.id}>{blog.title}</List.Item>
             )}
-        </ul>
+        </List>
       </div>
     )
   }

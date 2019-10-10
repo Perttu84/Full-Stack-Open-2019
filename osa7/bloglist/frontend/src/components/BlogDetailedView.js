@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import blogService from '../services/blogs'
 import NewCommentForm from './NewCommentForm'
+import { List } from 'semantic-ui-react'
 
 const BlogDetailedView = (props) => {
   const blog = props.blog
@@ -26,11 +27,11 @@ const BlogDetailedView = (props) => {
         <div>
           <h3>Comments</h3>
           <NewCommentForm blogId={blogId}/>
-            <ul>
+            <List>
               {comments.map(comment =>
-                <li key={comment.id}>{comment.content}</li>
+                <List.Item key={comment.id}>{comment.content}</List.Item>
               )}
-            </ul>
+            </List>
         </div>
       )
   }

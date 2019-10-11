@@ -22,18 +22,18 @@ const BlogDetailedView = (props) => {
     setLikes(likes+1)
   }
 
-  const Comments = ({comments, blogId}) => {
-      return (
-        <div>
-          <h3>Comments</h3>
-          <NewCommentForm blogId={blogId}/>
-            <List>
-              {comments.map(comment =>
-                <List.Item key={comment.id}>{comment.content}</List.Item>
-              )}
-            </List>
-        </div>
-      )
+  const Comments = ({ comments, blogId }) => {
+    return (
+      <div>
+        <h3>Comments</h3>
+        <NewCommentForm blogId={blogId}/>
+        <List>
+          {comments.map(comment =>
+            <List.Item key={comment.id}>{comment.content}</List.Item>
+          )}
+        </List>
+      </div>
+    )
   }
 
   if (user.username !== blog.user.username) {
@@ -46,7 +46,7 @@ const BlogDetailedView = (props) => {
         added by { blog.user.name }
         <Comments comments={blog.comments} blogId={blog.id}/>
       </div>
-      
+
     )
   }
   return (

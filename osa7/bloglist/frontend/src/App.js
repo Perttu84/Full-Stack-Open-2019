@@ -2,7 +2,7 @@ import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
 import {
   BrowserRouter as Router,
-  Route, Link, Redirect, withRouter
+  Route, Link, Redirect
 } from 'react-router-dom'
 import Notification from './components/Notification'
 import NewBlogForm from './components/NewBlogForm'
@@ -151,7 +151,7 @@ const App = (props) => {
         <List>
           {user.blogs.map(blog =>
             <List.Item key={blog.id}>{blog.title}</List.Item>
-            )}
+          )}
         </List>
       </div>
     )
@@ -187,25 +187,25 @@ const App = (props) => {
 
   return (
     <Container>
-    <Router>
-      <div>
-        <Menu>
-          <Menu.Item link>
-            <Link style={padding} to="/">blogs</Link>
-          </Menu.Item>
-          <Menu.Item link>
-            <Link style={padding} to="/users">users</Link>
-          </Menu.Item>
-          <Menu.Item disabled>
-            {props.user.name} logged in
-          </Menu.Item>
-          <Menu.Item>
-            <Button onClick={() => handleLogout()}>logout</Button>
-          </Menu.Item>
-        </Menu>
-      </div>
-      <h2>blogs</h2>
-      <Notification />
+      <Router>
+        <div>
+          <Menu>
+            <Menu.Item link>
+              <Link style={padding} to="/">blogs</Link>
+            </Menu.Item>
+            <Menu.Item link>
+              <Link style={padding} to="/users">users</Link>
+            </Menu.Item>
+            <Menu.Item disabled>
+              {props.user.name} logged in
+            </Menu.Item>
+            <Menu.Item>
+              <Button onClick={() => handleLogout()}>logout</Button>
+            </Menu.Item>
+          </Menu>
+        </div>
+        <h2>blogs</h2>
+        <Notification />
         <Route exact path="/" render={() => <Blogs />} />
         <Route exact path="/users" render={() => <Users />} />
         <Route exact path="/blogs" render={() => <Redirect to="/" />} />

@@ -3,19 +3,19 @@ import commentService from '../services/comments'
 
 const blogReducer = (state = [], action) => {
   switch (action.type) {
-    case 'INIT_BLOGS':
-      return action.data
-              .sort((a, b) => (a.likes > b.likes) ? -1 : 1)
-    case 'NEW_BLOG':
-      return action.data
-              .sort((a, b) => (a.likes > b.likes) ? -1 : 1)
-    case 'REMOVE_BLOG':
-      return action.data
-              .sort((a, b) => (a.likes > b.likes) ? -1 : 1)
-    case 'NEW_COMMENT':
-      return action.data
-              .sort((a, b) => (a.likes > b.likes) ? -1 : 1)
-    default: return state
+  case 'INIT_BLOGS':
+    return action.data
+      .sort((a, b) => (a.likes > b.likes) ? -1 : 1)
+  case 'NEW_BLOG':
+    return action.data
+      .sort((a, b) => (a.likes > b.likes) ? -1 : 1)
+  case 'REMOVE_BLOG':
+    return action.data
+      .sort((a, b) => (a.likes > b.likes) ? -1 : 1)
+  case 'NEW_COMMENT':
+    return action.data
+      .sort((a, b) => (a.likes > b.likes) ? -1 : 1)
+  default: return state
 
   }
 }

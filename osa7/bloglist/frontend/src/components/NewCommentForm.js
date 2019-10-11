@@ -16,7 +16,7 @@ const NewCommentForm = (props) => {
       }
       props.createComment(commentObject, props.blogId)
       newComment.reset()
-      props.setMessage(`a new comment added succesfully`, 'success', 2)
+      props.setMessage('a new comment added succesfully', 'success', 2)
     } catch(exception) {
       props.setMessage(exception.response.data.error, 'error', 2)
     }
